@@ -1,0 +1,57 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_USER: consultorio
+      POSTGRES_PASSWORD: consultorio123
+      POSTGRES_DB: consultorio_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - consultorio-net
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "consultorio"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongo:
+    image: mongo:5
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+    networks:
+      - consultorio-net
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/consultorio_db
+      SPRING_DATASOURCE_USERNAME: consultorio
+      SPRING_DATASOURCE_PASSWORD: consultorio123
+      SPRING_DATA_MONGODB_URI: mongodb://mongo:27017/consultorio_cache
+    networks:
+      - consultorio-net
+
+volumes:
+  pgdata:
+  mongodata:
+
+networks:
+  consultorio-net:

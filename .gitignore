@@ -1,0 +1,53 @@
+# === Java & Gradle ===
+/build/
+/.gradle/
+/out/
+!gradle/wrapper/gradle-wrapper.jar
+
+# === Logs ===
+*.log
+*.pid
+*.gz
+*.zip
+
+# === OS Files ===
+.DS_Store
+Thumbs.db
+
+# === IntelliJ IDEA ===
+.idea/
+*.iml
+*.iws
+
+# === Eclipse ===
+.project
+.classpath
+.csettings
+.settings/
+.metadata/
+
+# === NetBeans ===
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# === VS Code ===
+.vscode/
+
+# === Mac / Windows ===
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# === Spring Boot specific ===
+/target/
+/*.jar
+/*.war
+/*.ear
+
+# === Maven ===
+/.mvn/
+!**/mvnw
+!**/mvnw.cmd
